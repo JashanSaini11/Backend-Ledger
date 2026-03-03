@@ -1,5 +1,6 @@
 import { User } from "../models/user.model";
 import * as jwt from "jsonwebtoken";
+import {emailService} from "../services/email.service";
 
 /** 
    - user resgistered controller
@@ -30,6 +31,15 @@ async function userRegisteredController(req: any, res: any) {
     expiresIn: "7d",
   });
   res.cookie("token", token, { httpOnly: true, secure: false });
+
+  // Send email before responding (but don't block if it fails)
+  try {
+    await emailService.sendRegistrationEmail(user.email, user.name);
+  } catch (err) {
+    console.error("Registration email failed:", err);
+    // Continue with registration even if email fails
+  }
+
   res
     .status(201)
     .json({ user: { _id: user._id, email: user.email, name: user.name } });
