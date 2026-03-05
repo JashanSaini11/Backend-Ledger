@@ -63,6 +63,15 @@ async function sendRegistrationEmail(userEmail: string, name: string) {
   return await sendEmail(userEmail, subject, text, html);
 }
 
+async function sendTransactionEmail(userEmail: string, name: string, amount: number, transactionId: string, toAccount: string) {
+  const subject = "Transaction Completed";
+  const text = `Hello ${name},\n\nYour transaction of $${amount.toFixed(2)} has been completed successfully to ${toAccount}.\n\nTransaction ID: ${transactionId}\n\nBest regards,\nThe Backend-Ledge Team`;
+  const html = `<p>Hello ${name},</p><p>Your transaction of $${amount.toFixed(2)} has been completed successfully to ${toAccount}.</p><p>Transaction ID: ${transactionId}</p><p>Best regards,<br>The Backend-Ledge Team</p>`;
+
+  return await sendEmail(userEmail, subject, text, html);
+}
+
 export const emailService = {
   sendRegistrationEmail,
+  sendTransactionEmail,
 };

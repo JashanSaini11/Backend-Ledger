@@ -1,4 +1,4 @@
-import { User } from "../models/user.model";
+import { UserModel } from "../models/user.model";
 import * as jwt from "jsonwebtoken";
 import {emailService} from "../services/email.service";
 
@@ -14,14 +14,14 @@ async function userRegisteredController(req: any, res: any) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const isExist = await User.findOne({ email });
+  const isExist = await UserModel.findOne({ email });
   if (isExist) {
     return res
       .status(422)
       .json({ message: "Email already exists", status: "failed" });
   }
 
-  const user = await User.create({
+  const user = await UserModel.create({
     email,
     name,
     password,
@@ -57,7 +57,7 @@ async function userLoginController (req: any,res: any) {
     return res.status(400).json({message:"Email and password are required"})
   }
 
-  const user = await User.findOne({ email }).select("+password");
+  const user = await UserModel.findOne({ email }).select("+password");
 
   if(!user){
     return res.status(401).json({message:"Invalid email please try again"})
