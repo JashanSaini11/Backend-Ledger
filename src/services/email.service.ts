@@ -71,7 +71,16 @@ async function sendTransactionEmail(userEmail: string, name: string, amount: num
   return await sendEmail(userEmail, subject, text, html);
 }
 
+async function sendInitialFundsEmail(userEmail: string, amount: number,) {
+  const subject = "Initial Funds Added";
+  const text = `Hello ,\n\nAn initial fund of $${amount.toFixed(2)} has been added to your account.\n\nBest regards,\nThe Backend-Ledge Team`;
+  const html = `<p>Hello,</p><p>An initial fund of $${amount.toFixed(2)} has been added to your account.</p><p>Best regards,<br>The Backend-Ledge Team</p>`;
+
+  return await sendEmail(userEmail, subject, text, html);
+}
+
 export const emailService = {
   sendRegistrationEmail,
   sendTransactionEmail,
+  sendInitialFundsEmail,
 };
