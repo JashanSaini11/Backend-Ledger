@@ -101,7 +101,7 @@ async function createTransaction(req: any, res: any) {
   session.startTransaction();
 
   const transaction = (
-    await TransactionModel.create(
+    await new TransactionModel(
       {
         fromAccount,
         toAccount,
@@ -110,26 +110,26 @@ async function createTransaction(req: any, res: any) {
         status: "Pending",
       },
 
-      { session },
     )
-  )[0];
+  );
   const debitLedgerEntry = await LedgerModel.create(
+    [
     {
       account: fromAccount,
-      amount: -amount,
+      amount: amount,
       transaction: transaction._id,
       type: "Debit",
-    },
+    }],
     { session },
   );
 
   const creditLedgerEntry = await LedgerModel.create(
-    {
+    [{
       account: toAccount,
       amount: amount,
       transaction: transaction._id,
       type: "Credit",
-    },
+    }],
     { session },
   );
 
